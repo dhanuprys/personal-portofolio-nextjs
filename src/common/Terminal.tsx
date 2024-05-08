@@ -10,6 +10,7 @@ type Command = {
 };
 
 type TerminalCommandHistoryProps = {
+    signature: string;
     user: string;
     path: string;
     command: string;
@@ -53,6 +54,14 @@ function Terminal() {
                 }
             },
             {
+                command: 'clear',
+                description: '',
+                processor: () => {
+                    setHistory([]);
+                    return 'Terminal dibersihkan';
+                }
+            },
+            {
                 command: 'name',
                 description: 'Menampilkan nama',
                 processor: (command) => {
@@ -84,6 +93,7 @@ function Terminal() {
         setHistory([
             ...commandHistories,
             {
+                signature: String(new Date().getMilliseconds()),
                 user: 'you@dhanu-portofolio',
                 path: '/home/dhanu',
                 command: terminalCommand,
@@ -105,22 +115,22 @@ function Terminal() {
     return (
         <div className="shadow-xl" onClick={() => terminalInputRef.current && terminalInputRef.current.focus()}>
             {/* HEADER */}
-            <div className="grid grid-cols-12 px-2 py-1 bg-slate-800 text-slate-200 rounded-t">
+            <div className="grid grid-cols-12 px-2 py-1 bg-slate-900 text-slate-200 rounded-t">
                 <div className="col-span-2 flex items-center gap-2">
-                    <div className="size-3 bg-red-500 rounded-full"></div>
-                    <div className="size-3 bg-yellow-500 rounded-full"></div>
-                    <div className="size-3 bg-green-500 rounded-full"></div>
+                    <div className="size-2 lg:size-3 bg-red-500 rounded-full"></div>
+                    <div className="size-2 lg:size-3 bg-yellow-500 rounded-full"></div>
+                    <div className="size-2 lg:size-3 bg-green-500 rounded-full"></div>
                 </div>
-                <div className="col-span-8 flex justify-center">
+                <div className="text-sm md:text-base col-span-8 flex justify-center">
                     dhanu-portofolio
                 </div>
             </div>
 
-            <div className="bg-slate-700 rounded-b text-sm min-h-[300px] max-h-[300px] overflow-auto px-2 flex-col gap-2">
+            <div className="bg-slate-800 rounded-b text-sm min-h-[300px] max-h-[300px] overflow-auto px-2 flex-col gap-2">
                 {
                     commandHistories && commandHistories.map((command) => {
                         return (
-                            <TerminalCommandHistory {...command} />
+                            <TerminalCommandHistory key={command.signature} {...command} />
                         );
                     })
                 }
